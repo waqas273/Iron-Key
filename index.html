@@ -1,0 +1,362 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Iron Key - Secure Password Manager</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.gpteng.co/gptengineer.js" type="module"></script>
+</head>
+<body>
+  <div class="app-container">
+    <!-- Splash Screen -->
+    <div id="splash-screen" class="screen active">
+      <div class="splash-content">
+        <div class="logo-container">
+          <i class="fas fa-key logo-icon pulse"></i>
+        </div>
+        <h1 class="app-title">IRON KEY</h1>
+        <p class="tagline">Your Passwords, Secured</p>
+        <div class="loading-bar">
+          <div class="loading-progress"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Setup Screen -->
+    <div id="setup-screen" class="screen">
+      <div class="setup-content">
+        <h2 class="fade-in">Welcome to Iron Key</h2>
+        <p class="setup-description fade-in">Secure your passwords with a master password and PIN.</p>
+        
+        <div id="setup-master-password" class="setup-step active fade-in">
+          <h3>Create Your Master Password</h3>
+          <p class="tip">Choose a strong, memorable password</p>
+          <div class="form-group">
+            <input type="password" id="master-password-input" placeholder="Master Password" class="secure-input">
+            <div class="password-strength-meter">
+              <div class="strength-bar"></div>
+            </div>
+            <small id="password-strength-text">Password strength: Not set</small>
+          </div>
+          <div class="form-group">
+            <input type="password" id="confirm-master-password-input" placeholder="Confirm Master Password" class="secure-input">
+            <small id="password-match-text"></small>
+          </div>
+          <button id="set-master-password-btn" class="btn btn-primary">Continue</button>
+        </div>
+
+        <div id="setup-pin" class="setup-step">
+          <h3>Create Your 4-Digit PIN</h3>
+          <p class="tip">This PIN will be used to access your passwords</p>
+          <div class="pin-container">
+            <input type="password" maxlength="1" class="pin-digit" data-index="0">
+            <input type="password" maxlength="1" class="pin-digit" data-index="1">
+            <input type="password" maxlength="1" class="pin-digit" data-index="2">
+            <input type="password" maxlength="1" class="pin-digit" data-index="3">
+          </div>
+          <div class="form-group">
+            <input type="password" id="confirm-pin-input" placeholder="Confirm PIN" class="secure-input" maxlength="4">
+            <small id="pin-match-text"></small>
+          </div>
+          <button id="set-pin-btn" class="btn btn-primary">Complete Setup</button>
+        </div>
+
+        <div id="setup-complete" class="setup-step">
+          <div class="success-animation">
+            <i class="fas fa-check-circle"></i>
+          </div>
+          <h3>Setup Complete!</h3>
+          <p>Your Iron Key vault is ready to use.</p>
+          <button id="goto-dashboard-btn" class="btn btn-primary">Enter Vault</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- PIN Verification Screen -->
+    <div id="verify-pin-screen" class="screen">
+      <div class="verify-content">
+        <h2>Enter Your PIN</h2>
+        <p class="verify-description">Please enter your PIN to continue</p>
+        <div class="pin-container">
+          <input type="password" maxlength="1" class="verify-pin-digit" data-index="0">
+          <input type="password" maxlength="1" class="verify-pin-digit" data-index="1">
+          <input type="password" maxlength="1" class="verify-pin-digit" data-index="2">
+          <input type="password" maxlength="1" class="verify-pin-digit" data-index="3">
+        </div>
+        <div id="pin-error" class="error-message"></div>
+        <button id="verify-pin-btn" class="btn btn-primary">Unlock</button>
+        <button id="cancel-verify-pin-btn" class="btn btn-secondary">Cancel</button>
+      </div>
+    </div>
+
+    <!-- Dashboard Screen -->
+    <div id="dashboard-screen" class="screen">
+      <header class="dashboard-header">
+        <div class="welcome-container">
+          <h2 id="welcome-text" class="welcome-text">Welcome to Iron Key</h2>
+          <p id="security-quote" class="security-quote">Your digital fortress in a connected world</p>
+        </div>
+        <div class="key-menu-button">
+          <i class="fas fa-key"></i>
+        </div>
+      </header>
+
+      <div class="dashboard-content">
+        <div class="action-buttons">
+          <button id="add-password-btn" class="action-btn">
+            <i class="fas fa-plus-circle"></i>
+            <span>Add Password</span>
+          </button>
+          <button id="view-passwords-btn" class="action-btn">
+            <i class="fas fa-eye"></i>
+            <span>See Passwords</span>
+          </button>
+        </div>
+
+        <div class="dashboard-message">
+          <i class="fas fa-shield-alt"></i>
+          <p>Your passwords are securely stored.<br>Use 'See Passwords' to view them.</p>
+        </div>
+      </div>
+
+      <footer class="app-footer">
+        <div class="footer-icons">
+          <div class="footer-icon" data-action="support">
+            <i class="fas fa-headset"></i>
+            <span>Support</span>
+          </div>
+          <div class="footer-icon" data-action="social">
+            <i class="fab fa-instagram"></i>
+            <span>Follow</span>
+          </div>
+          <div class="footer-icon" data-action="location">
+            <i class="fas fa-map-marker-alt"></i>
+            <span>Location</span>
+          </div>
+          <div class="footer-icon" data-action="help">
+            <i class="fas fa-question-circle"></i>
+            <span>Help</span>
+          </div>
+          <div class="footer-icon" data-action="export">
+            <i class="fas fa-file-export"></i>
+            <span>Export</span>
+          </div>
+          <div class="footer-icon" data-action="reset">
+            <i class="fas fa-bomb"></i>
+            <span>Reset</span>
+          </div>
+        </div>
+        <div class="copyright">© 2025 Iron Key <br>Muhammad Waqas Awan</div>
+      </footer>
+    </div>
+    
+    <!-- Passwords List Screen -->
+    <div id="passwords-list-screen" class="screen">
+      <div class="modal-header">
+        <h2>Your Passwords</h2>
+        
+      </div>
+      <div class="modal-content">
+        <div class="passwords-container">
+          <div id="no-passwords-message" class="no-data-message">
+            <i class="fas fa-lock"></i>
+            <p>No passwords stored yet.<br>Use 'Add Password' to create one.</p>
+          </div>
+          <ul id="passwords-list" class="passwords-list"></ul>
+        </div>
+        <button id="back-to-dashboard-btn" class="btn btn-secondary">Back to Dashboard</button>
+      </div>
+    </div>
+
+    <!-- Add Password Screen -->
+    <div id="add-password-screen" class="screen">
+      <div class="modal-header">
+        <h2>Add New Password</h2>
+        <button class="close-btn"><i class="fas fa-times"></i></button>
+      </div>
+      <div class="modal-content">
+        <form id="add-password-form">
+          <div class="form-group">
+            <label for="website-input">Website or App Name</label>
+            <input type="text" id="website-input" placeholder="e.g., Facebook, Gmail" required>
+          </div>
+          <div class="form-group">
+            <label for="email-input">Email or Username</label>
+            <input type="text" id="email-input" placeholder="your.email@example.com" required>
+          </div>
+          <div class="form-group password-input-group">
+            <label for="password-input">Password</label>
+            <div class="password-field">
+              <input type="password" id="password-input" placeholder="Enter password" required>
+              <button type="button" class="toggle-password-btn"><i class="fas fa-eye"></i></button>
+            </div>
+            <div class="password-generator">
+              <button type="button" id="generate-password-btn" class="btn btn-secondary">Generate Strong Password</button>
+              <div class="password-strength-meter">
+                <div class="strength-bar"></div>
+              </div>
+            </div>
+          </div>
+          <button type="submit" class="btn btn-primary">Save Password</button>
+          <button type="button" id="cancel-add-password" class="btn btn-secondary">Cancel</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Password Details Screen -->
+    <div id="password-details-screen" class="screen">
+      <div class="modal-header">
+        <h2 id="details-title">Password Details</h2>
+        <button class="close-btn"><i class="fas fa-times"></i></button>
+      </div>
+      <div class="modal-content">
+        <div class="detail-group">
+          <label>Website</label>
+          <p id="details-website" class="detail-value"></p>
+        </div>
+        <div class="detail-group">
+          <label>Email/Username</label>
+          <p id="details-email" class="detail-value"></p>
+          <button id="copy-email-btn" class="copy-btn"><i class="fas fa-copy"></i></button>
+        </div>
+        <div class="detail-group">
+          <label>Password</label>
+          <div class="password-display">
+            <p id="details-password" class="detail-value password-value">••••••••</p>
+            <button id="toggle-password-view-btn" class="toggle-btn"><i class="fas fa-eye"></i></button>
+            <button id="copy-password-btn" class="copy-btn"><i class="fas fa-copy"></i></button>
+          </div>
+        </div>
+        <div class="detail-actions">
+          <button id="delete-password-btn" class="btn btn-danger"><i class="fas fa-trash"></i> Delete</button>
+          <button id="back-to-passwords-btn" class="btn btn-secondary">Back to List</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Key Menu Screen -->
+    <div id="key-menu-screen" class="screen">
+      <div class="modal-header">
+        <h2>Settings</h2>
+        <button class="close-btn"><i class="fas fa-times"></i></button>
+      </div>
+      <div class="modal-content">
+        <div class="menu-items">
+          <div class="menu-item" id="change-master-password">
+            <i class="fas fa-key"></i>
+            <span>Change Master Password</span>
+          </div>
+          <div class="menu-item" id="change-pin">
+            <i class="fas fa-lock"></i>
+            <span>Change PIN</span>
+          </div>
+          <div class="menu-item" id="export-data">
+            <i class="fas fa-file-export"></i>
+            <span>Export Data</span>
+          </div>
+          <div class="menu-item danger" id="reset-app">
+            <i class="fas fa-bomb"></i>
+            <span>Reset App</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Change Master Password Screen -->
+    <div id="change-master-password-screen" class="screen">
+      <div class="modal-header">
+        <h2>Change Master Password</h2>
+        <button class="close-btn"><i class="fas fa-times"></i></button>
+      </div>
+      <div class="modal-content">
+        <form id="change-master-password-form">
+          <div class="form-group">
+            <label for="current-master-password">Current Master Password</label>
+            <input type="password" id="current-master-password" placeholder="Enter current master password" required>
+          </div>
+          <div class="form-group">
+            <label for="new-master-password">New Master Password</label>
+            <input type="password" id="new-master-password" placeholder="Enter new master password" required>
+            <div class="password-strength-meter">
+              <div class="strength-bar"></div>
+            </div>
+            <small id="new-password-strength-text">Password strength: Not set</small>
+          </div>
+          <div class="form-group">
+            <label for="confirm-new-master-password">Confirm New Master Password</label>
+            <input type="password" id="confirm-new-master-password" placeholder="Confirm new master password" required>
+            <small id="new-password-match-text"></small>
+          </div>
+          <button type="submit" class="btn btn-primary">Update Master Password</button>
+          <button type="button" class="btn btn-secondary cancel-change">Cancel</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Change PIN Screen -->
+    <div id="change-pin-screen" class="screen">
+      <div class="modal-header">
+        <h2>Change PIN</h2>
+        <button class="close-btn"><i class="fas fa-times"></i></button>
+      </div>
+      <div class="modal-content">
+        <form id="change-pin-form">
+          <div class="form-group">
+            <label for="current-pin">Current PIN</label>
+            <input type="password" id="current-pin" placeholder="Enter current PIN" maxlength="4" required>
+          </div>
+          <div class="form-group">
+            <label for="new-pin">New PIN</label>
+            <div class="pin-container">
+              <input type="password" maxlength="1" class="new-pin-digit" data-index="0">
+              <input type="password" maxlength="1" class="new-pin-digit" data-index="1">
+              <input type="password" maxlength="1" class="new-pin-digit" data-index="2">
+              <input type="password" maxlength="1" class="new-pin-digit" data-index="3">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="confirm-new-pin">Confirm New PIN</label>
+            <input type="password" id="confirm-new-pin" placeholder="Confirm new PIN" maxlength="4" required>
+            <small id="new-pin-match-text"></small>
+          </div>
+          <button type="submit" class="btn btn-primary">Update PIN</button>
+          <button type="button" class="btn btn-secondary cancel-change">Cancel</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Reset Confirmation Modal -->
+    <div id="reset-confirmation-modal" class="modal">
+      <div class="modal-content">
+        <h3>Reset Application?</h3>
+        <p>This will delete all your saved passwords and reset Iron Key. This action cannot be undone.</p>
+        <div class="form-group">
+          <label for="reset-master-password">Enter Master Password to Confirm</label>
+          <input type="password" id="reset-master-password" placeholder="Master Password" required>
+        </div>
+        <div class="modal-actions">
+          <button id="confirm-reset-btn" class="btn btn-danger">Reset Everything</button>
+          <button id="cancel-reset-btn" class="btn btn-secondary">Cancel</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast">
+      <div class="toast-content">
+        <i id="toast-icon" class="fas"></i>
+        <div class="toast-message"></div>
+      </div>
+      <div class="toast-progress"></div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
